@@ -1189,6 +1189,9 @@ export default function LeetCodeClient() {
             color: var(--text);
             padding-top: 64px;
             transition: all 0.3s ease;
+            overflow-x: hidden;
+            width: 100vw;
+            box-sizing: border-box;
           }
           
           .leetcode-wrapper.light {
@@ -1205,9 +1208,11 @@ export default function LeetCodeClient() {
 
           .problem-detail-view {
             max-width: 1400px;
+            width: 100%;
             margin: 0 auto;
             padding: 4rem 2rem;
             animation: slideUp 0.4s ease-out;
+            box-sizing: border-box;
           }
           @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -1280,6 +1285,8 @@ export default function LeetCodeClient() {
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
+            max-width: 100%;
           }
           .code-card {
             padding: 0;
@@ -1299,6 +1306,9 @@ export default function LeetCodeClient() {
             font-size: 0.9rem;
             line-height: 1.6;
             color: var(--code-text);
+            box-sizing: border-box;
+            width: 100%;
+            display: block;
           }
           .diagram-box {
             background: var(--code-bg);
@@ -1309,6 +1319,9 @@ export default function LeetCodeClient() {
             font-family: 'Consolas', monospace;
             font-size: 0.85rem;
             overflow-x: auto;
+            box-sizing: border-box;
+            width: 100%;
+            display: block;
           }
           .section-title {
             display: flex;
