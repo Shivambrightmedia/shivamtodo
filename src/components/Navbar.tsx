@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { Home, ListTodo, Image, Link as LinkIcon, Menu, X, Film } from 'lucide-react';
+import { Home, ListTodo, Image, Link as LinkIcon, Menu, X, Film, Code2 } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -12,6 +12,7 @@ export default function Navbar() {
     { name: 'LINKS', href: '/links', icon: <LinkIcon size={18} /> },
     { name: 'IMAGES', href: '/images', icon: <Image size={18} /> },
     { name: 'VIDEOS', href: '/videos', icon: <Film size={18} /> },
+    { name: 'LEETCODE', href: '/leetcode', icon: <Code2 size={18} /> },
   ];
 
   return (
