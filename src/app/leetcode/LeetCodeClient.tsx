@@ -1139,10 +1139,44 @@ export default function LeetCodeClient() {
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
+  const SDE_ORDER = [
+    // Recursion (keeping original order)
+    'Fibonacci Number',
+    'Reverse String',
+    'Factorial',
+    'Binary Search',
+    'Sum of Digits',
+    'Merge Sort',
+    'Tower of Hanoi',
+    'Climbing Stairs',
+    'Count Inversions',
+    // Backtracking (SDE Sheet Order)
+    'Permutations',
+    'N-Queens',
+    'Sudoku Solver',
+    'M Coloring Problem',
+    'Rat in a Maze',
+    'Word Break (print all ways)',
+    // Other Backtracking
+    'Subsets (Power Set)',
+    'Subsets II',
+    'Combination Sum I',
+    'Combination Sum II',
+    'Word Search',
+    'Palindrome Partitioning',
+    "Knight's Tour"
+  ];
+
   const filteredProblems = PROBLEMS.filter(p => 
     p.category === activeTab && 
     p.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ).sort((a, b) => {
+    let indexA = SDE_ORDER.indexOf(a.title);
+    let indexB = SDE_ORDER.indexOf(b.title);
+    if (indexA === -1) indexA = 999;
+    if (indexB === -1) indexB = 999;
+    return indexA - indexB;
+  });
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
