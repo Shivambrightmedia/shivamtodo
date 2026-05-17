@@ -1073,6 +1073,63 @@ class Solution {
         return solveGraphColoring(0, adjacencyList, assignedColors, totalNodes, maxColorsAllowed);
     }
 }`
+  },
+  {
+    id: 'back-11',
+    title: 'Word Break (print all ways)',
+    difficulty: 'Hard',
+    category: 'Backtracking',
+    description: 'Find all possible sentences that can be formed by adding spaces in a string, using words from a dictionary.',
+    approach: 'Take prefix of string. If prefix in dictionary, recurse on suffix. Keep tracking the sentence. If string empty, add sentence to result.',
+    complexity: 'Time: O(2^N) in worst case, Space: O(N^2) for recursive stack and strings.',
+    example: 's="catsanddog", dict=["cat","cats","and","sand","dog"] -> ["cats and dog", "cat sand dog"]',
+    diagram: `
+"catsanddog"
+ -> "cat" + recurse("sanddog") 
+    -> "cat" + "sand" + recurse("dog")
+       -> "cat" + "sand" + "dog" (Valid!)
+ -> "cats" + recurse("anddog")
+    -> "cats" + "and" + recurse("dog")
+       -> "cats" + "and" + "dog" (Valid!)
+    `,
+    code: `import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+
+class Solution {
+    private void findWordBreaks(String remainingStr, Set<String> wordDict, String currentSentence, List<String> allSentences) {
+        // Agar string khatam ho gayi, valid sentence mil gaya
+        if (remainingStr.length() == 0) {
+            allSentences.add(currentSentence.trim());
+            return;
+        }
+        
+        // String ke har possible prefix ko check karo
+        for (int i = 1; i <= remainingStr.length(); i++) {
+            String prefixWord = remainingStr.substring(0, i);
+            
+            // Agar prefix dictionary me hai
+            if (wordDict.contains(prefixWord)) {
+                
+                // Prefix ko sentence me add karo aur bachi hui string ke liye recurse karo
+                String newSentence = currentSentence + prefixWord + " ";
+                String suffixStr = remainingStr.substring(i);
+                
+                findWordBreaks(suffixStr, wordDict, newSentence, allSentences);
+                // Backtracking is implicit here as string concat creates new instance
+            }
+        }
+    }
+    
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        List<String> allSentences = new ArrayList<>();
+        Set<String> dictionarySet = new HashSet<>(wordDict); // O(1) lookup ke liye
+        
+        findWordBreaks(s, dictionarySet, "", allSentences);
+        return allSentences;
+    }
+}`
   }
 ];
 
