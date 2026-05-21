@@ -22,7 +22,7 @@ const PROBLEMS: Problem[] = [
     title: 'Fibonacci Number',
     difficulty: 'Easy',
     category: 'Recursion',
-    description: 'Calculate the nth number in the Fibonacci sequence where F(n) = F(n-1) + F(n-2).',
+    description: 'Calculate the nth n in the Fibonacci sequence where F(n) = F(n-1) + F(n-2).',
     approach: 'Identify base cases: F(0)=0, F(1)=1. Recursive step: sum of previous two values. Good for understanding multiple recursive calls.',
     complexity: 'Time: O(2^n) without memoization, Space: O(n) recursion depth.',
     example: 'n=4 -> F(3)+F(2) -> (F(2)+F(1)) + (F(1)+F(0)) -> 3',
@@ -33,17 +33,25 @@ const PROBLEMS: Problem[] = [
   /    \\     /   \\
 f(2)  f(1) f(1) f(0)
     `,
-    code: `class Solution {
-    public int fib(int targetNumber) {
-        // Base case: agar number 0 ya 1 hai, toh wahi return kardo
-        if (targetNumber == 0 || targetNumber == 1) {
-            return targetNumber;
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    public int fib(int n) {
+        // Base case: agar n 0 ya 1 hai, toh wahi return kardo
+        if (n == 0 || n == 1) {
+            return n;
         }
         // Recursive call: pichle 2 numbers ka sum
-        int previousOne = fib(targetNumber - 1);
-        int previousTwo = fib(targetNumber - 2);
+        int prev1 = fib(n - 1);
+        int prev2 = fib(n - 2);
         
-        return previousOne + previousTwo;
+        return prev1 + prev2;
     }
 }`
   },
@@ -63,22 +71,30 @@ f(2)  f(1) f(1) f(0)
      \\
       [l] (base case)
     `,
-    code: `class Solution {
-    private void reverseHelper(char[] charArray, int leftIndex, int rightIndex) {
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    private void reverseHelper(char[] chars, int left, int right) {
         // Base case: jab pointers cross kar jayein
-        if (leftIndex >= rightIndex) return;
+        if (left >= right) return;
         
         // Dono characters ko swap karo
-        char tempChar = charArray[leftIndex];
-        charArray[leftIndex] = charArray[rightIndex];
-        charArray[rightIndex] = tempChar;
+        char temp = chars[left];
+        chars[left] = chars[right];
+        chars[right] = temp;
         
         // Andar ke array ke liye recursive call
-        reverseHelper(charArray, leftIndex + 1, rightIndex - 1);
+        reverseHelper(chars, left + 1, right - 1);
     }
     
-    public void reverseString(char[] charArray) {
-        reverseHelper(charArray, 0, charArray.length - 1);
+    public void reverseString(char[] chars) {
+        reverseHelper(chars, 0, chars.length - 1);
     }
 }`
   },
@@ -98,13 +114,21 @@ fact(4) -> 4 * fact(3)
                     \\
                      2 * fact(1) -> returns 1
     `,
-    code: `class Solution {
-    public int factorial(int number) {
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    public int factorial(int n) {
         // Base case: 0 aur 1 ka factorial 1 hota hai
-        if (number <= 1) return 1;
+        if (n <= 1) return 1;
         
         // Recursive step: n * (n-1)!
-        return number * factorial(number - 1);
+        return n * factorial(n - 1);
     }
 }`
   },
@@ -124,29 +148,37 @@ fact(4) -> 4 * fact(3)
            |
          Found!
     `,
-    code: `class Solution {
-    private int searchHelper(int[] sortedArray, int targetValue, int startIndex, int endIndex) {
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    private int searchHelper(int[] nums, int target, int start, int end) {
         // Base case: agar search space khatam ho jaye
-        if (startIndex > endIndex) return -1;
+        if (start > end) return -1;
         
-        int middleIndex = startIndex + (endIndex - startIndex) / 2;
+        int mid = start + (end - start) / 2;
         
         // Agar target mil gaya
-        if (sortedArray[middleIndex] == targetValue) {
-            return middleIndex;
+        if (nums[mid] == target) {
+            return mid;
         }
         
         // Agar target chota hai, left half me dhoondo
-        if (sortedArray[middleIndex] > targetValue) {
-            return searchHelper(sortedArray, targetValue, startIndex, middleIndex - 1);
+        if (nums[mid] > target) {
+            return searchHelper(nums, target, start, mid - 1);
         }
         
         // Warna right half me dhoondo
-        return searchHelper(sortedArray, targetValue, middleIndex + 1, endIndex);
+        return searchHelper(nums, target, mid + 1, end);
     }
 
-    public int search(int[] sortedArray, int targetValue) {
-        return searchHelper(sortedArray, targetValue, 0, sortedArray.length - 1);
+    public int search(int[] nums, int target) {
+        return searchHelper(nums, target, 0, nums.length - 1);
     }
 }`
   },
@@ -166,16 +198,24 @@ sum(123) -> 3 + sum(12)
                        \\
                         return 1
     `,
-    code: `class Solution {
-    public int sumOfDigits(int number) {
-        // Base case: agar number 10 se chota hai, wahi digit return kardo
-        if (number < 10) return number;
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    public int sumOfDigits(int n) {
+        // Base case: agar n 10 se chota hai, wahi digit return kardo
+        if (n < 10) return n;
         
-        int lastDigit = number % 10;
-        int remainingNumber = number / 10;
+        int rem = n % 10;
+        int remNum = n / 10;
         
-        // Last digit aur bache hue number ka sum
-        return lastDigit + sumOfDigits(remainingNumber);
+        // Last digit aur bache hue n ka sum
+        return rem + sumOfDigits(remNum);
     }
 }`
   },
@@ -201,43 +241,51 @@ sum(123) -> 3 + sum(12)
     `,
     code: `import java.util.ArrayList;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void mergeHalves(int[] arrayToSort, int leftStart, int middle, int rightEnd) {
-        ArrayList<Integer> mergedTemp = new ArrayList<>();
-        int leftPointer = leftStart;
-        int rightPointer = middle + 1;
+    private void mergeHalves(int[] nums, int start, int mid, int end) {
+        ArrayList<Integer> tempList = new ArrayList<>();
+        int i = start;
+        int j = mid + 1;
         
         // Dono halves ko compare karke chota element temp me dalo
-        while (leftPointer <= middle && rightPointer <= rightEnd) {
-            if (arrayToSort[leftPointer] <= arrayToSort[rightPointer]) {
-                mergedTemp.add(arrayToSort[leftPointer++]);
+        while (i <= mid && j <= end) {
+            if (nums[i] <= nums[j]) {
+                tempList.add(nums[i++]);
             } else {
-                mergedTemp.add(arrayToSort[rightPointer++]);
+                tempList.add(nums[j++]);
             }
         }
         
         // Baki bache hue elements ko dalo
-        while (leftPointer <= middle) mergedTemp.add(arrayToSort[leftPointer++]);
-        while (rightPointer <= rightEnd) mergedTemp.add(arrayToSort[rightPointer++]);
+        while (i <= mid) tempList.add(nums[i++]);
+        while (j <= end) tempList.add(nums[j++]);
         
         // Original array me wapas copy karo
-        for (int i = leftStart; i <= rightEnd; i++) {
-            arrayToSort[i] = mergedTemp.get(i - leftStart);
+        for (int i = start; i <= end; i++) {
+            nums[i] = tempList.get(i - start);
         }
     }
     
-    public void mergeSort(int[] arrayToSort, int leftStart, int rightEnd) {
+    public void mergeSort(int[] nums, int start, int end) {
         // Base case: single element
-        if (leftStart >= rightEnd) return;
+        if (start >= end) return;
         
-        int middle = leftStart + (rightEnd - leftStart) / 2;
+        int mid = start + (end - start) / 2;
         
         // Left aur right half ko recursively sort karo
-        mergeSort(arrayToSort, leftStart, middle);
-        mergeSort(arrayToSort, middle + 1, rightEnd);
+        mergeSort(nums, start, mid);
+        mergeSort(nums, mid + 1, end);
         
         // Dono sorted halves ko merge kardo
-        mergeHalves(arrayToSort, leftStart, middle, rightEnd);
+        mergeHalves(nums, start, mid, end);
     }
 }`
   },
@@ -256,22 +304,30 @@ Move(3, A, C)
  ├── Move Disk 3 to C
  └── Move(2, B, C)
     `,
-    code: `class Solution {
-    public void moveDisks(int totalDisks, char sourceRod, char auxiliaryRod, char destinationRod) {
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    public void moveDisks(int n, char src, char aux, char dest) {
         // Base case: sirf 1 disk hai toh direct move kardo
-        if (totalDisks == 1) {
-            System.out.println("Move disk 1 from " + sourceRod + " to " + destinationRod);
+        if (n == 1) {
+            System.out.println("Move disk 1 from " + src + " to " + dest);
             return;
         }
         
         // N-1 disks ko source se auxiliary me rakho
-        moveDisks(totalDisks - 1, sourceRod, destinationRod, auxiliaryRod);
+        moveDisks(n - 1, src, dest, aux);
         
         // Badi disk ko destination pe rakho
-        System.out.println("Move disk " + totalDisks + " from " + sourceRod + " to " + destinationRod);
+        System.out.println("Move disk " + n + " from " + src + " to " + dest);
         
         // Un N-1 disks ko auxiliary se wapas destination pe rakho
-        moveDisks(totalDisks - 1, auxiliaryRod, sourceRod, destinationRod);
+        moveDisks(n - 1, aux, src, dest);
     }
 }`
   },
@@ -293,28 +349,36 @@ step(2) step(1)
     `,
     code: `import java.util.Arrays;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private int countWays(int currentStep, int[] memoizationCache) {
+    private int countWays(int step, int[] memo) {
         // Base case: 0 ya 1 step bache hain toh 1 hi tarika hai
-        if (currentStep <= 1) return 1;
+        if (step <= 1) return 1;
         
         // Agar pehle compute kiya hua hai
-        if (memoizationCache[currentStep] != -1) {
-            return memoizationCache[currentStep];
+        if (memo[step] != -1) {
+            return memo[step];
         }
         
         // 1 step lo + 2 step lo
-        int waysTakingOneStep = countWays(currentStep - 1, memoizationCache);
-        int waysTakingTwoSteps = countWays(currentStep - 2, memoizationCache);
+        int ways1 = countWays(step - 1, memo);
+        int ways2 = countWays(step - 2, memo);
         
-        memoizationCache[currentStep] = waysTakingOneStep + waysTakingTwoSteps;
-        return memoizationCache[currentStep];
+        memo[step] = ways1 + ways2;
+        return memo[step];
     }
     
-    public int climbStairs(int totalSteps) {
-        int[] memoizationCache = new int[totalSteps + 1];
-        Arrays.fill(memoizationCache, -1);
-        return countWays(totalSteps, memoizationCache);
+    public int climbStairs(int n) {
+        int[] memo = new int[n + 1];
+        Arrays.fill(memo, -1);
+        return countWays(n, memo);
     }
 }`
   },
@@ -333,50 +397,58 @@ class Solution {
  2 > 1? YES -> Inversions += (remaining in left)
  4 > 3? YES -> Inversions += (remaining in left)
     `,
-    code: `class Solution {
-    private int mergeAndCountInversions(int[] numberArray, int leftStart, int middle, int rightEnd) {
-        int[] temporaryArray = new int[rightEnd - leftStart + 1];
-        int leftPointer = leftStart, rightPointer = middle + 1;
-        int tempIndex = 0, inversionCount = 0;
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    private int mergeAndCountInversions(int[] nums, int start, int mid, int end) {
+        int[] temp = new int[end - start + 1];
+        int i = start, j = mid + 1;
+        int k = 0, invCount = 0;
         
         // Dono halves ko compare karo
-        while (leftPointer <= middle && rightPointer <= rightEnd) {
-            if (numberArray[leftPointer] <= numberArray[rightPointer]) {
-                temporaryArray[tempIndex++] = numberArray[leftPointer++];
+        while (i <= mid && j <= end) {
+            if (nums[i] <= nums[j]) {
+                temp[k++] = nums[i++];
             } else {
                 // Agar right chota hai, toh inversion hai
-                temporaryArray[tempIndex++] = numberArray[rightPointer++];
+                temp[k++] = nums[j++];
                 // Left ke bache hue sabhi elements right wale se bade honge
-                inversionCount += (middle + 1 - leftPointer); 
+                invCount += (mid + 1 - i); 
             }
         }
         
-        while (leftPointer <= middle) temporaryArray[tempIndex++] = numberArray[leftPointer++];
-        while (rightPointer <= rightEnd) temporaryArray[tempIndex++] = numberArray[rightPointer++];
+        while (i <= mid) temp[k++] = nums[i++];
+        while (j <= end) temp[k++] = nums[j++];
         
-        for (int i = leftStart; i <= rightEnd; i++) {
-            numberArray[i] = temporaryArray[i - leftStart];
+        for (int i = start; i <= end; i++) {
+            nums[i] = temp[i - start];
         }
-        return inversionCount;
+        return invCount;
     }
 
-    private int mergeSortAndCount(int[] numberArray, int leftStart, int rightEnd) {
-        int totalInversions = 0;
-        if (leftStart < rightEnd) {
-            int middle = leftStart + (rightEnd - leftStart) / 2;
+    private int mergeSortAndCount(int[] nums, int start, int end) {
+        int totInv = 0;
+        if (start < end) {
+            int mid = start + (end - start) / 2;
             
             // Left aur right half ke inversions
-            totalInversions += mergeSortAndCount(numberArray, leftStart, middle);
-            totalInversions += mergeSortAndCount(numberArray, middle + 1, rightEnd);
+            totInv += mergeSortAndCount(nums, start, mid);
+            totInv += mergeSortAndCount(nums, mid + 1, end);
             
             // Merge karte waqt ke inversions
-            totalInversions += mergeAndCountInversions(numberArray, leftStart, middle, rightEnd);
+            totInv += mergeAndCountInversions(nums, start, mid, end);
         }
-        return totalInversions;
+        return totInv;
     }
     
-    public int countInversions(int[] numberArray) {
-        return mergeSortAndCount(numberArray, 0, numberArray.length - 1);
+    public int countInversions(int[] nums) {
+        return mergeSortAndCount(nums, 0, nums.length - 1);
     }
 }`
   },
@@ -401,23 +473,31 @@ class Solution {
     code: `import java.util.ArrayList;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void findPermutations(int[] numbers, List<List<Integer>> allPermutations, int currentIndex) {
+    private void findPermutations(int[] numbers, List<List<Integer>> ans, int idx) {
         // Agar array ke end tak pahunch gaye
-        if (currentIndex == numbers.length) {
-            List<Integer> singlePermutation = new ArrayList<>();
-            for (int num : numbers) singlePermutation.add(num);
-            allPermutations.add(singlePermutation);
+        if (idx == numbers.length) {
+            List<Integer> temp = new ArrayList<>();
+            for (int num : numbers) temp.add(num);
+            ans.add(temp);
             return;
         }
         
         // Har element ke sath swap try karo
-        for (int i = currentIndex; i < numbers.length; i++) {
-            swapElements(numbers, currentIndex, i); // Do step (Pick)
+        for (int i = idx; i < numbers.length; i++) {
+            swapElements(numbers, idx, i); // Do step (Pick)
             
-            findPermutations(numbers, allPermutations, currentIndex + 1); // Explore
+            findPermutations(numbers, ans, idx + 1); // Explore
             
-            swapElements(numbers, currentIndex, i); // Undo step (Backtrack)
+            swapElements(numbers, idx, i); // Undo step (Backtrack)
         }
     }
     
@@ -428,9 +508,9 @@ class Solution {
     }
     
     public List<List<Integer>> permute(int[] numbers) {
-        List<List<Integer>> allPermutations = new ArrayList<>();
-        findPermutations(numbers, allPermutations, 0);
-        return allPermutations;
+        List<List<Integer>> ans = new ArrayList<>();
+        findPermutations(numbers, ans, 0);
+        return ans;
     }
 }`
   },
@@ -453,29 +533,37 @@ class Solution {
     code: `import java.util.ArrayList;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void generateSubsets(int[] numbers, List<Integer> currentSubset, int currentIndex, List<List<Integer>> allSubsets) {
+    private void generateSubsets(int[] numbers, List<Integer> path, int idx, List<List<Integer>> ans) {
         // Base case: array khatam
-        if (currentIndex >= numbers.length) {
-            allSubsets.add(new ArrayList<>(currentSubset));
+        if (idx >= numbers.length) {
+            ans.add(new ArrayList<>(path));
             return;
         }
         
         // Choice 1: Exclude current element
-        generateSubsets(numbers, currentSubset, currentIndex + 1, allSubsets);
+        generateSubsets(numbers, path, idx + 1, ans);
         
         // Choice 2: Include current element
-        currentSubset.add(numbers[currentIndex]);
-        generateSubsets(numbers, currentSubset, currentIndex + 1, allSubsets);
+        path.add(numbers[idx]);
+        generateSubsets(numbers, path, idx + 1, ans);
         
         // Backtrack: state clean karo
-        currentSubset.remove(currentSubset.size() - 1);
+        path.remove(path.size() - 1);
     }
     
     public List<List<Integer>> subsets(int[] numbers) {
-        List<List<Integer>> allSubsets = new ArrayList<>();
-        generateSubsets(numbers, new ArrayList<>(), 0, allSubsets);
-        return allSubsets;
+        List<List<Integer>> ans = new ArrayList<>();
+        generateSubsets(numbers, new ArrayList<>(), 0, ans);
+        return ans;
     }
 }`
   },
@@ -499,30 +587,38 @@ skip second 2 to avoid dupes!
 import java.util.Arrays;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void findUniqueSubsets(int currentIndex, int[] numbers, List<Integer> currentSubset, List<List<Integer>> allUniqueSubsets) {
+    private void findUniqueSubsets(int idx, int[] numbers, List<Integer> path, List<List<Integer>> ans) {
         // Har state ek valid subset hai
-        allUniqueSubsets.add(new ArrayList<>(currentSubset));
+        ans.add(new ArrayList<>(path));
         
-        for (int loopIndex = currentIndex; loopIndex < numbers.length; loopIndex++) {
-            // Agar same number pehle aa chuka hai is level pe, toh skip karo
-            if (loopIndex != currentIndex && numbers[loopIndex] == numbers[loopIndex - 1]) {
+        for (int i = idx; i < numbers.length; i++) {
+            // Agar same n pehle aa chuka hai is level pe, toh skip karo
+            if (i != idx && numbers[i] == numbers[i - 1]) {
                 continue;
             }
             
-            currentSubset.add(numbers[loopIndex]); // Pick
+            path.add(numbers[i]); // Pick
             
-            findUniqueSubsets(loopIndex + 1, numbers, currentSubset, allUniqueSubsets); // Explore
+            findUniqueSubsets(i + 1, numbers, path, ans); // Explore
             
-            currentSubset.remove(currentSubset.size() - 1); // Backtrack
+            path.remove(path.size() - 1); // Backtrack
         }
     }
 
     public List<List<Integer>> subsetsWithDup(int[] numbers) {
         Arrays.sort(numbers); // Sort karna zaroori hai duplicates sath rakhne ke liye
-        List<List<Integer>> allUniqueSubsets = new ArrayList<>();
-        findUniqueSubsets(0, numbers, new ArrayList<>(), allUniqueSubsets);
-        return allUniqueSubsets;
+        List<List<Integer>> ans = new ArrayList<>();
+        findUniqueSubsets(0, numbers, new ArrayList<>(), ans);
+        return ans;
     }
 }`
   },
@@ -545,34 +641,42 @@ Pick 2 -> Sum=2 (remaining 3)
     code: `import java.util.ArrayList;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void findCombinations(int currentIndex, int targetRemaining, int[] candidates, List<List<Integer>> validCombinations, List<Integer> currentCombination) {
+    private void findCombinations(int idx, int rem, int[] nums, List<List<Integer>> ans, List<Integer> path) {
         // Agar array end tak check kar liya
-        if (currentIndex == candidates.length) {
-            if (targetRemaining == 0) {
-                validCombinations.add(new ArrayList<>(currentCombination));
+        if (idx == nums.length) {
+            if (rem == 0) {
+                ans.add(new ArrayList<>(path));
             }
             return;
         }
         
         // Choice 1: Pick the element (agar capacity hai)
-        if (candidates[currentIndex] <= targetRemaining) {
-            currentCombination.add(candidates[currentIndex]);
+        if (nums[idx] <= rem) {
+            path.add(nums[idx]);
             
             // Same index pe dobara call kar sakte hain kyunki unlimited supply hai
-            findCombinations(currentIndex, targetRemaining - candidates[currentIndex], candidates, validCombinations, currentCombination);
+            findCombinations(idx, rem - nums[idx], nums, ans, path);
             
-            currentCombination.remove(currentCombination.size() - 1); // Backtrack
+            path.remove(path.size() - 1); // Backtrack
         }
         
         // Choice 2: Do NOT pick the element, aage badho
-        findCombinations(currentIndex + 1, targetRemaining, candidates, validCombinations, currentCombination);
+        findCombinations(idx + 1, rem, nums, ans, path);
     }
     
-    public List<List<Integer>> combinationSum(int[] candidates, int targetSum) {
-        List<List<Integer>> validCombinations = new ArrayList<>();
-        findCombinations(0, targetSum, candidates, validCombinations, new ArrayList<>());
-        return validCombinations;
+    public List<List<Integer>> combinationSum(int[] nums, int targetSum) {
+        List<List<Integer>> ans = new ArrayList<>();
+        findCombinations(0, targetSum, nums, ans, new ArrayList<>());
+        return ans;
     }
 }`
   },
@@ -596,34 +700,42 @@ Pick 1
 import java.util.Arrays;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void findUniqueCombinations(int currentIndex, int targetRemaining, int[] candidates, List<List<Integer>> validCombinations, List<Integer> currentCombination) {
-        if (targetRemaining == 0) {
-            validCombinations.add(new ArrayList<>(currentCombination));
+    private void findUniqueCombinations(int idx, int rem, int[] nums, List<List<Integer>> ans, List<Integer> path) {
+        if (rem == 0) {
+            ans.add(new ArrayList<>(path));
             return;
         }
         
-        for (int loopIndex = currentIndex; loopIndex < candidates.length; loopIndex++) {
+        for (int i = idx; i < nums.length; i++) {
             // Duplicates ko ignore karo is recursion level pe
-            if (loopIndex > currentIndex && candidates[loopIndex] == candidates[loopIndex - 1]) continue;
+            if (i > idx && nums[i] == nums[i - 1]) continue;
             
             // Agar element required sum se bada hai, aage check karne ka fayda nahi
-            if (candidates[loopIndex] > targetRemaining) break;
+            if (nums[i] > rem) break;
             
-            currentCombination.add(candidates[loopIndex]); // Pick
+            path.add(nums[i]); // Pick
             
             // Agle index se recurse karo (ek element ek hi baar allowed hai)
-            findUniqueCombinations(loopIndex + 1, targetRemaining - candidates[loopIndex], candidates, validCombinations, currentCombination);
+            findUniqueCombinations(i + 1, rem - nums[i], nums, ans, path);
             
-            currentCombination.remove(currentCombination.size() - 1); // Backtrack
+            path.remove(path.size() - 1); // Backtrack
         }
     }
     
-    public List<List<Integer>> combinationSum2(int[] candidates, int targetSum) {
-        List<List<Integer>> validCombinations = new ArrayList<>();
-        Arrays.sort(candidates); // Sort karna zaroori hai duplicates avoid karne ke liye
-        findUniqueCombinations(0, targetSum, candidates, validCombinations, new ArrayList<>());
-        return validCombinations;
+    public List<List<Integer>> combinationSum2(int[] nums, int targetSum) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Arrays.sort(nums); // Sort karna zaroori hai duplicates avoid karne ke liye
+        findUniqueCombinations(0, targetSum, nums, ans, new ArrayList<>());
+        return ans;
     }
 }`
   },
@@ -646,66 +758,74 @@ Q . . .
     code: `import java.util.ArrayList;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void placeQueens(int currentColumn, char[][] chessBoard, List<List<String>> validBoards, 
-               int[] leftRowHash, int[] upperDiagonalHash, int[] lowerDiagonalHash, int totalQueens) {
+    private void placeQueens(int col, char[][] board, List<List<String>> ans, 
+               int[] leftRow, int[] upDiag, int[] lowDiag, int n) {
         
         // Agar saare columns fill ho gaye
-        if (currentColumn == totalQueens) {
-            validBoards.add(constructBoardLayout(chessBoard));
+        if (col == n) {
+            ans.add(constructBoardLayout(board));
             return;
         }
         
         // Har row me queen place karke check karo
-        for (int rowToTry = 0; rowToTry < totalQueens; rowToTry++) {
+        for (int row = 0; row < n; row++) {
             
             // Hashing arrays se O(1) me check karo ki cell safe hai ya nahi
-            if (leftRowHash[rowToTry] == 0 && 
-                lowerDiagonalHash[rowToTry + currentColumn] == 0 && 
-                upperDiagonalHash[totalQueens - 1 + currentColumn - rowToTry] == 0) {
+            if (leftRow[row] == 0 && 
+                lowDiag[row + col] == 0 && 
+                upDiag[n - 1 + col - row] == 0) {
                 
                 // Queen rakho
-                chessBoard[rowToTry][currentColumn] = 'Q'; 
-                leftRowHash[rowToTry] = 1;
-                lowerDiagonalHash[rowToTry + currentColumn] = 1;
-                upperDiagonalHash[totalQueens - 1 + currentColumn - rowToTry] = 1;
+                board[row][col] = 'Q'; 
+                leftRow[row] = 1;
+                lowDiag[row + col] = 1;
+                upDiag[n - 1 + col - row] = 1;
                 
                 // Agle column ke liye recurse karo
-                placeQueens(currentColumn + 1, chessBoard, validBoards, leftRowHash, upperDiagonalHash, lowerDiagonalHash, totalQueens);
+                placeQueens(col + 1, board, ans, leftRow, upDiag, lowDiag, n);
                 
                 // Backtrack: Queen hatao aur hash arrays ko reset karo
-                chessBoard[rowToTry][currentColumn] = '.';
-                leftRowHash[rowToTry] = 0;
-                lowerDiagonalHash[rowToTry + currentColumn] = 0;
-                upperDiagonalHash[totalQueens - 1 + currentColumn - rowToTry] = 0;
+                board[row][col] = '.';
+                leftRow[row] = 0;
+                lowDiag[row + col] = 0;
+                upDiag[n - 1 + col - row] = 0;
             }
         }
     }
     
-    private List<String> constructBoardLayout(char[][] chessBoard) {
-        List<String> formattedBoard = new ArrayList<>();
-        for (int i = 0; i < chessBoard.length; i++) {
-            formattedBoard.add(new String(chessBoard[i]));
+    private List<String> constructBoardLayout(char[][] board) {
+        List<String> boardStr = new ArrayList<>();
+        for (int i = 0; i < board.length; i++) {
+            boardStr.add(new String(board[i]));
         }
-        return formattedBoard;
+        return boardStr;
     }
     
     public List<List<String>> solveNQueens(int n) {
-        char[][] chessBoard = new char[n][n];
+        char[][] board = new char[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                chessBoard[i][j] = '.'; // Empty board
+                board[i][j] = '.'; // Empty board
             }
         }
-        List<List<String>> validBoards = new ArrayList<>();
+        List<List<String>> ans = new ArrayList<>();
         
         // O(1) safe check ke liye hash arrays
-        int[] leftRowHash = new int[n];
-        int[] upperDiagonalHash = new int[2 * n - 1];
-        int[] lowerDiagonalHash = new int[2 * n - 1];
+        int[] leftRow = new int[n];
+        int[] upDiag = new int[2 * n - 1];
+        int[] lowDiag = new int[2 * n - 1];
         
-        placeQueens(0, chessBoard, validBoards, leftRowHash, upperDiagonalHash, lowerDiagonalHash, n);
-        return validBoards;
+        placeQueens(0, board, ans, leftRow, upDiag, lowDiag, n);
+        return ans;
     }
 }`
   },
@@ -726,37 +846,45 @@ Find "AC":
 A -> (try B) fails
   -> (try C) succeeds -> Found!
     `,
-    code: `class Solution {
-    private boolean searchWordDFS(char[][] charGrid, String targetWord, int currentRow, int currentCol, int charIndex) {
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    private boolean dfs(char[][] board, String word, int r, int c, int idx) {
         // Agar pura word match ho gaya
-        if (charIndex == targetWord.length()) return true;
+        if (idx == word.length()) return true;
         
         // Boundaries check karo aur character match nahi kar raha toh false
-        if (currentRow < 0 || currentCol < 0 || 
-            currentRow >= charGrid.length || currentCol >= charGrid[0].length || 
-            charGrid[currentRow][currentCol] != targetWord.charAt(charIndex)) {
+        if (r < 0 || c < 0 || 
+            r >= board.length || c >= board[0].length || 
+            board[r][c] != word.charAt(idx)) {
             return false;
         }
         
-        char tempOriginalChar = charGrid[currentRow][currentCol];
-        charGrid[currentRow][currentCol] = '*'; // Cell ko visited mark karo
+        char temp = board[r][c];
+        board[r][c] = '*'; // Cell ko visited mark karo
         
         // 4 directions me jao (Up, Down, Left, Right)
-        boolean wordFound = searchWordDFS(charGrid, targetWord, currentRow + 1, currentCol, charIndex + 1) ||
-                            searchWordDFS(charGrid, targetWord, currentRow - 1, currentCol, charIndex + 1) ||
-                            searchWordDFS(charGrid, targetWord, currentRow, currentCol + 1, charIndex + 1) ||
-                            searchWordDFS(charGrid, targetWord, currentRow, currentCol - 1, charIndex + 1);
+        boolean found = dfs(board, word, r + 1, c, idx + 1) ||
+                            dfs(board, word, r - 1, c, idx + 1) ||
+                            dfs(board, word, r, c + 1, idx + 1) ||
+                            dfs(board, word, r, c - 1, idx + 1);
                      
-        charGrid[currentRow][currentCol] = tempOriginalChar; // Backtrack: Original state restore karo
-        return wordFound;
+        board[r][c] = temp; // Backtrack: Original state restore karo
+        return found;
     }
     
-    public boolean exist(char[][] charGrid, String targetWord) {
-        for (int row = 0; row < charGrid.length; row++) {
-            for (int col = 0; col < charGrid[0].length; col++) {
+    public boolean exist(char[][] board, String word) {
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
                 // Agar first character mil jaye, wahan se DFS start karo
-                if (charGrid[row][col] == targetWord.charAt(0)) {
-                    if (searchWordDFS(charGrid, targetWord, row, col, 0)) {
+                if (board[row][col] == word.charAt(0)) {
+                    if (dfs(board, word, row, col, 0)) {
                         return true;
                     }
                 }
@@ -783,42 +911,50 @@ Cut "aa" (Pal!) -> rem "b" -> Cut "b" => [aa,b]
     code: `import java.util.ArrayList;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private boolean checkIsPalindrome(String str, int startIndex, int endIndex) {
-        while (startIndex <= endIndex) {
-            if (str.charAt(startIndex++) != str.charAt(endIndex--)) {
+    private boolean checkIsPalindrome(String str, int start, int end) {
+        while (start <= end) {
+            if (str.charAt(start++) != str.charAt(end--)) {
                 return false;
             }
         }
         return true;
     }
     
-    private void findPartitions(int currentIndex, String inputString, List<String> currentPath, List<List<String>> allValidPartitions) {
+    private void findPartitions(int idx, String s, List<String> path, List<List<String>> ans) {
         // String end ho gayi, toh valid partition ban chuka hai
-        if (currentIndex == inputString.length()) {
-            allValidPartitions.add(new ArrayList<>(currentPath));
+        if (idx == s.length()) {
+            ans.add(new ArrayList<>(path));
             return;
         }
         
         // Har possible cut ko check karo
-        for (int cutIndex = currentIndex; cutIndex < inputString.length(); cutIndex++) {
-            if (checkIsPalindrome(inputString, currentIndex, cutIndex)) {
+        for (int i = idx; i < s.length(); i++) {
+            if (checkIsPalindrome(s, idx, i)) {
                 // Agar yeh part palindrome hai, isko path me add karo
-                currentPath.add(inputString.substring(currentIndex, cutIndex + 1));
+                path.add(s.substring(idx, i + 1));
                 
                 // Baki bachi string ke liye recurse karo
-                findPartitions(cutIndex + 1, inputString, currentPath, allValidPartitions);
+                findPartitions(i + 1, s, path, ans);
                 
                 // Backtrack: is cut ko hatao dusra try karne ke liye
-                currentPath.remove(currentPath.size() - 1);
+                path.remove(path.size() - 1);
             }
         }
     }
     
-    public List<List<String>> partition(String inputString) {
-        List<List<String>> allValidPartitions = new ArrayList<>();
-        findPartitions(0, inputString, new ArrayList<>(), allValidPartitions);
-        return allValidPartitions;
+    public List<List<String>> partition(String s) {
+        List<List<String>> ans = new ArrayList<>();
+        findPartitions(0, s, new ArrayList<>(), ans);
+        return ans;
     }
 }`
   },
@@ -840,52 +976,60 @@ Paths: DDRR, RDD
     code: `import java.util.ArrayList;
 import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void findMazePaths(int currentRow, int currentCol, int[][] mazeGrid, int gridSize, List<String> validPaths, String currentPathString, int[][] visitedCells) {
+    private void findMazePaths(int r, int c, int[][] maze, int n, List<String> ans, String pathStr, int[][] vis) {
         // Agar destination (bottom-right) pahunch gaye
-        if (currentRow == gridSize - 1 && currentCol == gridSize - 1) {
-            validPaths.add(currentPathString);
+        if (r == n - 1 && c == n - 1) {
+            ans.add(pathStr);
             return;
         }
         
         // Downward move (D)
-        if (currentRow + 1 < gridSize && visitedCells[currentRow + 1][currentCol] == 0 && mazeGrid[currentRow + 1][currentCol] == 1) {
-            visitedCells[currentRow][currentCol] = 1;
-            findMazePaths(currentRow + 1, currentCol, mazeGrid, gridSize, validPaths, currentPathString + "D", visitedCells);
-            visitedCells[currentRow][currentCol] = 0; // Backtrack
+        if (r + 1 < n && vis[r + 1][c] == 0 && maze[r + 1][c] == 1) {
+            vis[r][c] = 1;
+            findMazePaths(r + 1, c, maze, n, ans, pathStr + "D", vis);
+            vis[r][c] = 0; // Backtrack
         }
         
         // Left move (L)
-        if (currentCol - 1 >= 0 && visitedCells[currentRow][currentCol - 1] == 0 && mazeGrid[currentRow][currentCol - 1] == 1) {
-            visitedCells[currentRow][currentCol] = 1;
-            findMazePaths(currentRow, currentCol - 1, mazeGrid, gridSize, validPaths, currentPathString + "L", visitedCells);
-            visitedCells[currentRow][currentCol] = 0; // Backtrack
+        if (c - 1 >= 0 && vis[r][c - 1] == 0 && maze[r][c - 1] == 1) {
+            vis[r][c] = 1;
+            findMazePaths(r, c - 1, maze, n, ans, pathStr + "L", vis);
+            vis[r][c] = 0; // Backtrack
         }
         
         // Right move (R)
-        if (currentCol + 1 < gridSize && visitedCells[currentRow][currentCol + 1] == 0 && mazeGrid[currentRow][currentCol + 1] == 1) {
-            visitedCells[currentRow][currentCol] = 1;
-            findMazePaths(currentRow, currentCol + 1, mazeGrid, gridSize, validPaths, currentPathString + "R", visitedCells);
-            visitedCells[currentRow][currentCol] = 0; // Backtrack
+        if (c + 1 < n && vis[r][c + 1] == 0 && maze[r][c + 1] == 1) {
+            vis[r][c] = 1;
+            findMazePaths(r, c + 1, maze, n, ans, pathStr + "R", vis);
+            vis[r][c] = 0; // Backtrack
         }
         
         // Upward move (U)
-        if (currentRow - 1 >= 0 && visitedCells[currentRow - 1][currentCol] == 0 && mazeGrid[currentRow - 1][currentCol] == 1) {
-            visitedCells[currentRow][currentCol] = 1;
-            findMazePaths(currentRow - 1, currentCol, mazeGrid, gridSize, validPaths, currentPathString + "U", visitedCells);
-            visitedCells[currentRow][currentCol] = 0; // Backtrack
+        if (r - 1 >= 0 && vis[r - 1][c] == 0 && maze[r - 1][c] == 1) {
+            vis[r][c] = 1;
+            findMazePaths(r - 1, c, maze, n, ans, pathStr + "U", vis);
+            vis[r][c] = 0; // Backtrack
         }
     }
     
-    public List<String> findPath(int[][] mazeGrid, int gridSize) {
-        List<String> validPaths = new ArrayList<>();
-        int[][] visitedCells = new int[gridSize][gridSize];
+    public List<String> findPath(int[][] maze, int n) {
+        List<String> ans = new ArrayList<>();
+        int[][] vis = new int[n][n];
         
         // Agar starting cell block nahi hai
-        if (mazeGrid[0][0] == 1) {
-            findMazePaths(0, 0, mazeGrid, gridSize, validPaths, "", visitedCells);
+        if (maze[0][0] == 1) {
+            findMazePaths(0, 0, maze, n, ans, "", vis);
         }
-        return validPaths;
+        return ans;
     }
 }`
   },
@@ -903,41 +1047,49 @@ Try '1' in cell -> check row, col, 3x3 box
  If valid -> Recurse to next cell
  If dead-end -> backtrack, change to '.' try '2'
     `,
-    code: `class Solution {
-    private boolean checkPlacementValid(char[][] sudokuGrid, int targetRow, int targetCol, char digitToPlace) {
-        for (int iterator = 0; iterator < 9; iterator++) {
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    private boolean checkPlacementValid(char[][] board, int r, int c, char digit) {
+        for (int i = 0; i < 9; i++) {
             // Check current column
-            if (sudokuGrid[iterator][targetCol] == digitToPlace) return false; 
+            if (board[i][c] == digit) return false; 
             // Check current row
-            if (sudokuGrid[targetRow][iterator] == digitToPlace) return false; 
+            if (board[r][i] == digit) return false; 
             // Check 3x3 sub-box
-            if (sudokuGrid[3 * (targetRow / 3) + iterator / 3][3 * (targetCol / 3) + iterator % 3] == digitToPlace) {
+            if (board[3 * (r / 3) + i / 3][3 * (c / 3) + i % 3] == digit) {
                 return false; 
             }
         }
         return true;
     }
     
-    private boolean solveSudokuRecursive(char[][] sudokuGrid) {
-        for (int row = 0; row < sudokuGrid.length; row++) {
-            for (int col = 0; col < sudokuGrid[0].length; col++) {
+    private boolean solveSudokuRecursive(char[][] board) {
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
                 
                 // Agar cell khali hai
-                if (sudokuGrid[row][col] == '.') {
+                if (board[row][col] == '.') {
                     
                     // 1 se 9 tak digits try karo
                     for (char digit = '1'; digit <= '9'; digit++) {
                         
-                        if (checkPlacementValid(sudokuGrid, row, col, digit)) {
-                            sudokuGrid[row][col] = digit; // Place digit
+                        if (checkPlacementValid(board, row, col, digit)) {
+                            board[row][col] = digit; // Place digit
                             
                             // Agar aage ka grid solve ho gaya successfully
-                            if (solveSudokuRecursive(sudokuGrid)) {
+                            if (solveSudokuRecursive(board)) {
                                 return true;
                             }
                             
                             // Warna Backtrack karo
-                            sudokuGrid[row][col] = '.';
+                            board[row][col] = '.';
                         }
                     }
                     return false; // Koi bhi digit fit nahi hua, wrong path
@@ -947,8 +1099,8 @@ Try '1' in cell -> check row, col, 3x3 box
         return true; // Pura grid bhar gaya bina violation ke
     }
     
-    public void solveSudoku(char[][] sudokuGrid) {
-        solveSudokuRecursive(sudokuGrid);
+    public void solveSudoku(char[][] board) {
+        solveSudokuRecursive(board);
     }
 }`
   },
@@ -969,51 +1121,59 @@ Knight Moves:
  * . . . *
  . * . * .
     `,
-    code: `class Solution {
-    private boolean isCellSafeForKnight(int targetX, int targetY, int[][] chessBoard, int boardSize) {
+    code: `/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
+class Solution {
+    private boolean isCellSafeForKnight(int targetX, int targetY, int[][] board, int n) {
         // Boundaries ke andar ho aur cell khali ho (-1 matlab empty)
-        return (targetX >= 0 && targetX < boardSize && targetY >= 0 && targetY < boardSize && chessBoard[targetX][targetY] == -1);
+        return (targetX >= 0 && targetX < n && targetY >= 0 && targetY < n && board[targetX][targetY] == -1);
     }
     
-    private boolean findKnightTourPath(int currentX, int currentY, int currentMoveNumber, int[][] chessBoard, int[] rowJumps, int[] colJumps, int boardSize) {
-        // Agar saare cells cover ho gaye (boardSize * boardSize moves ho gayi)
-        if (currentMoveNumber == boardSize * boardSize) return true;
+    private boolean findKnightTourPath(int currentX, int currentY, int moveNum, int[][] board, int[] dr, int[] dc, int n) {
+        // Agar saare cells cover ho gaye (n * n moves ho gayi)
+        if (moveNum == n * n) return true;
         
         // Knight ki 8 possible L-shape moves try karo
         for (int k = 0; k < 8; k++) {
-            int nextJumpX = currentX + rowJumps[k];
-            int nextJumpY = currentY + colJumps[k];
+            int nx = currentX + dr[k];
+            int ny = currentY + dc[k];
             
-            if (isCellSafeForKnight(nextJumpX, nextJumpY, chessBoard, boardSize)) {
-                chessBoard[nextJumpX][nextJumpY] = currentMoveNumber; // Jump karo aur move number likho
+            if (isCellSafeForKnight(nx, ny, board, n)) {
+                board[nx][ny] = moveNum; // Jump karo aur move n likho
                 
                 // Agli move ke liye recurse karo
-                if (findKnightTourPath(nextJumpX, nextJumpY, currentMoveNumber + 1, chessBoard, rowJumps, colJumps, boardSize)) {
+                if (findKnightTourPath(nx, ny, moveNum + 1, board, dr, dc, n)) {
                     return true; // Pura tour complete ho gaya
                 } else {
-                    chessBoard[nextJumpX][nextJumpY] = -1; // Backtrack: Yeh jump fail ho gayi
+                    board[nx][ny] = -1; // Backtrack: Yeh jump fail ho gayi
                 }
             }
         }
         return false;
     }
     
-    public int[][] knightTour(int boardSize) {
-        int[][] chessBoard = new int[boardSize][boardSize];
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                chessBoard[i][j] = -1; // -1 represents empty square
+    public int[][] knightTour(int n) {
+        int[][] board = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = -1; // -1 represents empty square
             }
         }
         
         // Knight ki standard L-shape moves
-        int[] rowJumps = {2, 1, -1, -2, -2, -1, 1, 2};
-        int[] colJumps = {1, 2, 2, 1, -1, -2, -2, -1};
+        int[] dr = {2, 1, -1, -2, -2, -1, 1, 2};
+        int[] dc = {1, 2, 2, 1, -1, -2, -2, -1};
         
-        chessBoard[0][0] = 0; // Starting position pehla move
+        board[0][0] = 0; // Starting position pehla move
         
-        findKnightTourPath(0, 0, 1, chessBoard, rowJumps, colJumps, boardSize);
-        return chessBoard;
+        findKnightTourPath(0, 0, 1, board, dr, dc, n);
+        return board;
     }
 }`
   },
@@ -1034,43 +1194,51 @@ Node(3)[C2]
     `,
     code: `import java.util.List;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private boolean isColorSafe(int targetNode, List<Integer>[] adjacencyList, int[] assignedColors, int totalNodes, int colorToTry) {
+    private boolean isColorSafe(int node, List<Integer>[] adj, int[] colors, int n, int c) {
         // Check karo ki graph me koi neighbor node same color ka toh nahi hai
-        for (int neighborNode : adjacencyList[targetNode]) {
-            if (assignedColors[neighborNode] == colorToTry) {
+        for (int neighborNode : adj[node]) {
+            if (colors[neighborNode] == c) {
                 return false;
             }
         }
         return true;
     }
     
-    private boolean solveGraphColoring(int currentNode, List<Integer>[] adjacencyList, int[] assignedColors, int totalNodes, int maxColorsAllowed) {
+    private boolean solveGraphColoring(int currentNode, List<Integer>[] adj, int[] colors, int n, int m) {
         // Saare nodes ko color kar diya
-        if (currentNode == totalNodes) return true;
+        if (currentNode == n) return true;
         
-        // 1 se maxColorsAllowed tak har color try karo
-        for (int colorOption = 1; colorOption <= maxColorsAllowed; colorOption++) {
+        // 1 se m tak har color try karo
+        for (int c = 1; c <= m; c++) {
             
-            if (isColorSafe(currentNode, adjacencyList, assignedColors, totalNodes, colorOption)) {
-                assignedColors[currentNode] = colorOption; // Color assign karo
+            if (isColorSafe(currentNode, adj, colors, n, c)) {
+                colors[currentNode] = c; // Color assign karo
                 
                 // Agle node pe move karo
-                if (solveGraphColoring(currentNode + 1, adjacencyList, assignedColors, totalNodes, maxColorsAllowed)) {
+                if (solveGraphColoring(currentNode + 1, adj, colors, n, m)) {
                     return true;
                 }
                 
                 // Backtrack: Yeh color fail ho gaya, remove karo
-                assignedColors[currentNode] = 0; 
+                colors[currentNode] = 0; 
             }
         }
         return false; // Koi bhi color valid nahi tha is node ke liye
     }
 
-    public boolean graphColoring(List<Integer>[] adjacencyList, int maxColorsAllowed, int totalNodes) {
-        int[] assignedColors = new int[totalNodes];
+    public boolean graphColoring(List<Integer>[] adj, int m, int n) {
+        int[] colors = new int[n];
         // 0 value ka matlab hai abhi koi color nahi diya gaya
-        return solveGraphColoring(0, adjacencyList, assignedColors, totalNodes, maxColorsAllowed);
+        return solveGraphColoring(0, adj, colors, n, m);
     }
 }`
   },
@@ -1097,37 +1265,45 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
+/*
+Variables Purpose:
+- ans/paths: Stores the final results to be returned.
+- path/temp: Stores the current state/combination during exploration.
+- memo/vis/hash: Caches results or tracks visited states to avoid redundant work.
+- n/idx/start/end: Keeps track of current position or bounds.
+- nums/board/maze: Input data being processed.
+*/
 class Solution {
-    private void findWordBreaks(String remainingStr, Set<String> wordDict, String currentSentence, List<String> allSentences) {
+    private void findWordBreaks(String s, Set<String> dict, String path, List<String> ans) {
         // Agar string khatam ho gayi, valid sentence mil gaya
-        if (remainingStr.length() == 0) {
-            allSentences.add(currentSentence.trim());
+        if (s.length() == 0) {
+            ans.add(path.trim());
             return;
         }
         
         // String ke har possible prefix ko check karo
-        for (int i = 1; i <= remainingStr.length(); i++) {
-            String prefixWord = remainingStr.substring(0, i);
+        for (int i = 1; i <= s.length(); i++) {
+            String prefix = s.substring(0, i);
             
             // Agar prefix dictionary me hai
-            if (wordDict.contains(prefixWord)) {
+            if (dict.contains(prefix)) {
                 
                 // Prefix ko sentence me add karo aur bachi hui string ke liye recurse karo
-                String newSentence = currentSentence + prefixWord + " ";
-                String suffixStr = remainingStr.substring(i);
+                String newPath = path + prefix + " ";
+                String suffix = s.substring(i);
                 
-                findWordBreaks(suffixStr, wordDict, newSentence, allSentences);
+                findWordBreaks(suffix, dict, newPath, ans);
                 // Backtracking is implicit here as string concat creates new instance
             }
         }
     }
     
-    public List<String> wordBreak(String s, List<String> wordDict) {
-        List<String> allSentences = new ArrayList<>();
-        Set<String> dictionarySet = new HashSet<>(wordDict); // O(1) lookup ke liye
+    public List<String> wordBreak(String s, List<String> dict) {
+        List<String> ans = new ArrayList<>();
+        Set<String> set = new HashSet<>(dict); // O(1) lookup ke liye
         
-        findWordBreaks(s, dictionarySet, "", allSentences);
-        return allSentences;
+        findWordBreaks(s, set, "", ans);
+        return ans;
     }
 }`
   }
