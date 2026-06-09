@@ -7,11 +7,12 @@ import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import { Problem } from './types';
 import { RECURSION_PROBLEMS } from './data/recursion';
 import { BACKTRACKING_PROBLEMS } from './data/backtracking';
+import { BINARY_TREE_PROBLEMS } from './data/binarytrees';
 
-const PROBLEMS: Problem[] = [...RECURSION_PROBLEMS, ...BACKTRACKING_PROBLEMS];
+const PROBLEMS: Problem[] = [...RECURSION_PROBLEMS, ...BACKTRACKING_PROBLEMS, ...BINARY_TREE_PROBLEMS];
 
 export default function LeetCodeClient() {
-  const [activeTab, setActiveTab] = useState<'Recursion' | 'Backtracking'>('Recursion');
+  const [activeTab, setActiveTab] = useState<'Recursion' | 'Backtracking' | 'Binary Trees'>('Recursion');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -393,6 +394,13 @@ export default function LeetCodeClient() {
             >
               <Zap size={18} />
               BACKTRACKING
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'Binary Trees' ? 'active' : ''}`}
+              onClick={() => setActiveTab('Binary Trees')}
+            >
+              <Map size={18} />
+              BINARY TREES
             </button>
           </div>
 
