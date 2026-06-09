@@ -2,7 +2,7 @@ export interface Problem {
   id: string;
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
-  category: 'Recursion' | 'Backtracking' | 'Binary Trees';
+  category: 'Recursion' | 'Backtracking' | 'Binary Trees' | 'Binary Search Trees';
   description: string;
   approach: string;
   complexity: string;

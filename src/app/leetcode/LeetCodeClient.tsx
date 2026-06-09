@@ -8,11 +8,12 @@ import { Problem } from './types';
 import { RECURSION_PROBLEMS } from './data/recursion';
 import { BACKTRACKING_PROBLEMS } from './data/backtracking';
 import { BINARY_TREE_PROBLEMS } from './data/binarytrees';
+import { BINARY_SEARCH_TREE_PROBLEMS } from './data/bst';
 
-const PROBLEMS: Problem[] = [...RECURSION_PROBLEMS, ...BACKTRACKING_PROBLEMS, ...BINARY_TREE_PROBLEMS];
+const PROBLEMS: Problem[] = [...RECURSION_PROBLEMS, ...BACKTRACKING_PROBLEMS, ...BINARY_TREE_PROBLEMS, ...BINARY_SEARCH_TREE_PROBLEMS];
 
 export default function LeetCodeClient() {
-  const [activeTab, setActiveTab] = useState<'Recursion' | 'Backtracking' | 'Binary Trees'>('Recursion');
+  const [activeTab, setActiveTab] = useState<'Recursion' | 'Backtracking' | 'Binary Trees' | 'Binary Search Trees'>('Recursion');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -401,6 +402,13 @@ export default function LeetCodeClient() {
             >
               <Map size={18} />
               BINARY TREES
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'Binary Search Trees' ? 'active' : ''}`}
+              onClick={() => setActiveTab('Binary Search Trees')}
+            >
+              <Terminal size={18} />
+              BST
             </button>
           </div>
 
