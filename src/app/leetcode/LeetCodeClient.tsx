@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Search, ChevronLeft, Code2, Brain, Zap, Terminal, Lightbulb, BookOpen, Map, Sun, Moon } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 import { Problem } from './types';
 import { RECURSION_PROBLEMS } from './data/recursion';
