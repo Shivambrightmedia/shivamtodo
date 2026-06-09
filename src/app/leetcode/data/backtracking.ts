@@ -1,6 +1,7 @@
 import { Problem } from '../types';
 
 export const BACKTRACKING_PROBLEMS: Problem[] = [
+  {
     id: 'back-1',
     title: 'Permutations',
     difficulty: 'Medium',
